@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using RYXTravelAgency.Server.Models;
+using RYXTravelAgency.Shared.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,9 @@ namespace RYXTravelAgency.Server.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<Flight> Flights { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Customer> Customers { get; set; }
     }
 }

@@ -1,14 +1,113 @@
 ﻿@page "/"
 
-<h2 style="font-family: verdana; background-color: powderblue;">
-    Hi, dear Traveller... &#8195;
-    &#9992;&#8195;&#8195;
-    &#127780;&#8195;&#8195;
-    &#127783;&#8195;&#8195;
-    &#127785;
-</h2>
-<hr/>
-<h4 style="font-family:courier;">
-    Book flights to any of these beautiful places and enjoy your holidays!
-</h4>
-<img src="https://www.planetware.com/wpimages/2019/12/hawaii-in-pictures-beautiful-places-to-photograph-diamond-head-oahu.jpg" alt="Hawaii resort" width="460" height="345" align="middle">
+
+<hr />
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .column {
+            float: left;
+            width: 33.33%;
+            padding: 5px;
+        }
+
+        /* Clearfix (clear floats) */
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+        }
+
+        .image {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 2%;
+            right: 0;
+            height: 100%;
+            width: 32%;
+            opacity:0;
+            transition: 0.5s ease;
+            background-color:black;
+        }
+
+        .container:hover .overlay {
+            opacity: 0.8;
+        }
+
+        .text {
+            color: white;
+            font-size: 100%;
+            font-family:sans-serif;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-family: sans-serif; background-color: powderblue; border: 2px solid powderblue; border-radius: 5px; padding: 5px; text-align: center">
+
+        Book flights to any of these beautiful places and enjoy your holidays!
+    </h1>
+    <h1 style="font-family: sans-serif; background-color: powderblue; border: 2px solid powderblue; border-radius: 5px; padding: 5px; text-align: center">
+        &#8194;
+        &#9992;&#8195;&#8195;
+        &#127780;&#8195;&#8195;
+        &#127785;&#8195;&#8195;
+        &#127783;&#8195;&#8195;
+        &#127780;&#8195;&#8195;
+        &#127783;&#8195;&#8195;
+        &#9992;
+        </h1> 
+
+
+
+
+        <div class="row">
+            <div class="container">
+                <div class="column">
+                    <a href="https://www.youtube.com/watch?v=zuzodcBCMWA" target="_blank">
+                        <img src="https://www.planetware.com/wpimages/2019/12/hawaii-in-pictures-beautiful-places-to-photograph-diamond-head-oahu.jpg" alt="Beautiful Hawaii Resort" style="width:100%">
+                        <div class="overlay">
+                            <div class="text">Book tickets to Diamond-Head Oahu, Hawaii</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="column">
+                    <a href="https://www.youtube.com/watch?v=zuzodcBCMWA" target="_blank">
+                        <img src="https://www.planetware.com/wpimages/2019/10/thailand-top-attractions-khao-sok-national-park.jpg" alt="Famous Thailand National Park" style="width:100%">
+                        <div class="overlay">
+                            <div class="text">Book tickets to Khao Sok National Park, Thailand</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+</body>
+</html>
