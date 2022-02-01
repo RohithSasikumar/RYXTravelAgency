@@ -8,7 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RYXTravelAgency.Server.Data;
+using RYXTravelAgency.Server.IRepository;
 using RYXTravelAgency.Server.Models;
+using RYXTravelAgency.Server.Repository;
 using System.Linq;
 
 namespace RYXTravelAgency.Server
@@ -40,6 +42,8 @@ namespace RYXTravelAgency.Server
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
