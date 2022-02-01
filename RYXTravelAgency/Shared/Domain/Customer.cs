@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace RYXTravelAgency.Shared.Domain
 {
@@ -7,5 +7,7 @@ namespace RYXTravelAgency.Shared.Domain
         public string Name { get; set; }
         public int Phone { get; set; }
         public string EmailAddress { get; set; }
+        public virtual List<Booking> Bookings { get; set; }
+
     }
 }

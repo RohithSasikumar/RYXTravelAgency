@@ -10,8 +10,8 @@ using RYXTravelAgency.Server.Data;
 namespace RYXTravelAgency.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220124055608_AddFlightModel")]
-    partial class AddFlightModel
+    [Migration("20220201034414_AddAgencyEntityModel")]
+    partial class AddAgencyEntityModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -330,12 +330,42 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Arrival", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Arriv_Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Arrivals");
+                });
+
             modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Booking", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Arrive_time")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -346,16 +376,16 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateIn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateOut")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("Depart_time")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("FlightId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Total_seats")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -403,21 +433,12 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Flight", b =>
+            modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Departure", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Airline_id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Airline_name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Arrive_time")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -428,16 +449,43 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Depart_time")
+                    b.Property<string>("Depart_Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Departures");
+                });
+
+            modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Flight", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ArrivalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Available_Seats")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("End_location")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Start_location")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DepartureId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("Total_seats")
+                    b.Property<int>("ModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -445,7 +493,40 @@ namespace RYXTravelAgency.Server.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ArrivalId");
+
+                    b.HasIndex("DepartureId");
+
+                    b.HasIndex("ModelId");
+
                     b.ToTable("Flights");
+                });
+
+            modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Model", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Models");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -502,7 +583,7 @@ namespace RYXTravelAgency.Server.Data.Migrations
             modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Booking", b =>
                 {
                     b.HasOne("RYXTravelAgency.Shared.Domain.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Bookings")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -516,6 +597,38 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Flight");
+                });
+
+            modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Flight", b =>
+                {
+                    b.HasOne("RYXTravelAgency.Shared.Domain.Arrival", "Arrival")
+                        .WithMany()
+                        .HasForeignKey("ArrivalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RYXTravelAgency.Shared.Domain.Departure", "Departure")
+                        .WithMany()
+                        .HasForeignKey("DepartureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RYXTravelAgency.Shared.Domain.Model", "Model")
+                        .WithMany()
+                        .HasForeignKey("ModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Arrival");
+
+                    b.Navigation("Departure");
+
+                    b.Navigation("Model");
+                });
+
+            modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Customer", b =>
+                {
+                    b.Navigation("Bookings");
                 });
 
             modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Flight", b =>

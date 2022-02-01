@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 
 namespace RYXTravelAgency.Shared.Domain
 {
     public class Flight : BaseDomainModel
     {
-        public int Airline_id { get; set; }
-        public string Airline_name { get; set; }
-        public string Start_location { get; set; }
-        public string End_location { get; set; }
-        public DateTime Depart_time { get; set; }
-        public DateTime Arrive_time { get; set; }
-        public int Total_seats { get; set; }
+        public int Available_Seats { get; set; }
+        public int ModelId { get; set; }
+        public virtual Model Model { get; set; }
+        public int DepartureId { get; set; }
+        public virtual Departure Departure { get; set; }
+        public int ArrivalId { get; set; }
+        public virtual Arrival Arrival { get; set; }
         public virtual List<Booking> Bookings { get; set; }
     }
 }
