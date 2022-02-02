@@ -36,7 +36,7 @@ namespace RYXTravelAgency.Server.Controllers
         {
             //Refactored
             //return await _context.Flights.ToListAsync();
-            var Flights = await _unitOfWork.Flights.GetAll();
+            var Flights = await _unitOfWork.Flights.GetAll(includes: q => q.Include(x => x.Model).Include(x => x.Arrival).Include(x => x.Departure));
             return Ok(Flights);
         }
 

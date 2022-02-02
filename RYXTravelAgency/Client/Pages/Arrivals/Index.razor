@@ -1,0 +1,64 @@
+﻿@page "/arrivals/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+
+<h3 class="card-title">Arrival Locations</h3>
+<br />
+
+@if (Arrivals == null)
+{
+    <div class="alert alert-info">Loading locations...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Locations</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var arrival in Arrivals)
+            {
+                <tr>
+                    <td>@arrival.Arriv_Location</td>
+                    <td>
+                        <a href="/arrivals/view/@arrival.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/arrivals/edit/@arrival.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(arrival.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<Arrival> Arrivals;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Arrivals = await _client.GetFromJsonAsync<List<Arrival>>($"{Endpoints.ArrivalsEndpoint}");
+    }
+
+    async Task Delete(int arrivalId)
+    {
+        var arrival = Arrivals.First(q => q.Id == arrivalId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {arrival.Arriv_Location}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.DeparturesEndpoint}/{arrivalId}");
+            await OnInitializedAsync();
+        }
+    }
+}
