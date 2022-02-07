@@ -77,7 +77,19 @@ else
                 </td>
 
                 <td>@((booking.Arrive_time - booking.Depart_time).TotalHours.ToString())hrs</td>
-                <td>$@(booking.Total_seats * booking.Flight.TicketPrice)</td>
+                <td>
+                    $@(booking.Total_seats * booking.Flight.TicketPrice)
+                    <br />
+                    
+                    @if (booking.Total_seats == 1)
+                    {
+                        <p>@booking.Total_seats seat</p>
+                    }
+                    @if (booking.Total_seats > 1)
+                    {
+                        <p>@booking.Total_seats seats</p>
+                    }
+                </td>
                 <td>
                     <a href="/bookings/view/@booking.Id" class="btn btn-primary">
                         <span class="oi oi-book"></span>
