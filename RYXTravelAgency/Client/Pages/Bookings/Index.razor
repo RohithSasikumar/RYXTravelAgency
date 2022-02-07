@@ -4,10 +4,11 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
-
+@implements IDisposable
 
 <h3 class="card-title">Bookings</h3>
 <br />
+
 <a href="/bookings/create" class="btn btn-secondary">
     <span class="oi oi-plus"></span>
     Create New Booking
@@ -20,63 +21,112 @@
 }
 else
 {
-        <table class="table table-responsive">
-            <thead>
-                <tr>
-                    <th>Booking Id</th>
-                    <th>Customer License</th>
-                    <th>Date</th>
-                    <th>Duration in days</th>
-                    <th>Plate Number</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var booking in Bookings)
-                {
-                <tr>
-                    <td>@booking.Id</td>
-                    <td>@booking.Customer.Name</td>
-                    <td>@booking.DateCreated.Date.ToString("dd MMMM yyyy")</td>
-                    <td>@((booking.Arrive_time - booking.Depart_time).TotalDays.ToString())</td>
-                    <td>@booking.Flight.Model.Name</td>
-                    <td>
-                        <a href="/bookings/view/@booking.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/bookings/edit/@booking.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(()=>Delete(booking.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
-        }
-
-
-        @code {
-
-            public List<Booking> Bookings;
-
-            protected async override Task OnInitializedAsync()
+    <table class="table table-responsive" id="bookingsTable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Customer</th>
+                <th>Flight</th>
+                <th>Departure (SGT)</th>
+                <th>Arrival (SGT)</th>
+                <th>Duration</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Bookings)
             {
-                Bookings = await _client.GetFromJsonAsync<List<Booking>>($"{Endpoints.BookingsEndpoint}");
-            }
+            <tr>
+                <td>@booking.Id</td>
+                <td>@booking.Customer.Name</td>
+                <td>
+                    @foreach (var flight in Flights)
+                    {
+                        @if (booking.Flight.ModelId == flight.ModelId)
+                        {
+                            @flight.Model.Name
+                        }
+                    }
+                </td>
+                <td align="center">
+                    @booking.Depart_time.ToShortDateString()
+                    <br />
+                    @booking.Depart_time.ToShortTimeString()
+                    <br />
+                    @foreach (var flight in Flights)
+                    {
+                        @if (booking.Flight.ModelId == flight.ModelId)
+                        {
+                            @flight.Departure.Depart_Location
+                        }
+                    }
+                </td>
+                <td align="center">
+                    @booking.Arrive_time.ToShortDateString()
+                    <br />
+                    @booking.Arrive_time.ToShortTimeString()
+                    <br />
+                    @foreach (var flight in Flights)
+                    {
+                        @if (booking.Flight.ModelId == flight.ModelId)
+                        {
+                            @flight.Arrival.Arriv_Location
+                        }
+                    }
+                </td>
 
-            async Task Delete(int bookingId)
-            {
-                var booking = Bookings.First(q => q.Id == bookingId);
-                var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {booking.Id}?"); 
-                if (confirm)
-                {
-                    await _client.DeleteAsync($"api/booking/{bookingId}");
-                    await OnInitializedAsync();
-                }
+                <td>@((booking.Arrive_time - booking.Depart_time).TotalHours.ToString())hrs</td>
+                <td>$@(booking.Total_seats * booking.Flight.TicketPrice)</td>
+                <td>
+                    <a href="/bookings/view/@booking.Id" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/bookings/edit/@booking.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(()=>Delete(booking.Id))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
             }
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+    public List<Booking> Bookings;
+    public List<Flight> Flights;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Bookings = await _client.GetFromJsonAsync<List<Booking>>($"{Endpoints.BookingsEndpoint}");
+        Flights = await _client.GetFromJsonAsync<List<Flight>>($"{Endpoints.FlightsEndpoint}");
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#bookingsTable");
+    }
+
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#bookingsTable");
+    }
+
+    async Task Delete(int bookingId)
+    {
+        var booking = Bookings.First(q => q.Id == bookingId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {booking.Id}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.BookingsEndpoint}/{bookingId}");
+            await OnInitializedAsync();
         }
+    }
+}
 
 

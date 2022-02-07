@@ -1,0 +1,23 @@
+﻿@page "/departures/edit/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>Edit Departure Location</h3>
+
+<FormComponent ButtonText="Update" OnValidSubmit="EditDeparture" departure="departure" />
+
+@code {
+    [Parameter] public int id { get; set; }
+    Departure departure = new Departure();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        departure = await _client.GetFromJsonAsync<Departure>($"{Endpoints.DeparturesEndpoint}/{id}");
+    }
+
+    async Task EditDeparture()
+    {
+        await _client.PutAsJsonAsync($"{Endpoints.DeparturesEndpoint}/{id}", departure);
+        _navManager.NavigateTo("/departures/");
+    }
+}

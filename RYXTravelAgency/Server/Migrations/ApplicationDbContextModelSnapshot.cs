@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RYXTravelAgency.Server.Data;
 
-namespace RYXTravelAgency.Server.Data.Migrations
+namespace RYXTravelAgency.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220201034414_AddAgencyEntityModel")]
-    partial class AddAgencyEntityModel
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,6 +147,22 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
+                            ConcurrencyStamp = "e13f5e5b-ca1d-420b-95eb-c639e434fe82",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
+                            ConcurrencyStamp = "a7cce0fe-0c94-480a-88ce-00c09cdc1da5",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -236,6 +250,13 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            RoleId = "ad2bcf0c-20db-474f-8407-5a6b159518ba"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -328,6 +349,26 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "00ebcbd2-bb63-448c-a390-1ef2ad6de45a",
+                            Email = "admin@localhost.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEK0xMHyEP/dN9WYZjJKaBUduvWVpAlm84anx7yyUY42Yba/V7LtG7jL/o0hQEmJBqw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "58bd920c-5bd2-4ec5-bc7c-f235f53095be",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Arrival", b =>
@@ -338,6 +379,7 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Arriv_Location")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
@@ -355,6 +397,26 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Arrivals");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Arriv_Location = "South Island, New Zealand",
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(5529),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(5536),
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Arriv_Location = "Rome",
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(5540),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(5541),
+                            UpdatedBy = "System"
+                        });
                 });
 
             modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Booking", b =>
@@ -370,7 +432,8 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("CustomerId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
@@ -382,10 +445,12 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.Property<DateTime>("Depart_time")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FlightId")
+                    b.Property<int?>("FlightId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("Total_seats")
+                    b.Property<int?>("Total_seats")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -417,13 +482,18 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmailAddress")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Phone")
-                        .HasColumnType("int");
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -450,6 +520,7 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Depart_Location")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
@@ -458,6 +529,26 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Departures");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(8027),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(8033),
+                            Depart_Location = "Singapore",
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(8036),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(8037),
+                            Depart_Location = "Bangkok, Thailand",
+                            UpdatedBy = "System"
+                        });
                 });
 
             modelBuilder.Entity("RYXTravelAgency.Shared.Domain.Flight", b =>
@@ -467,10 +558,12 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ArrivalId")
+                    b.Property<int?>("ArrivalId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("Available_Seats")
+                    b.Property<int?>("Available_Seats")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -482,11 +575,16 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartureId")
+                    b.Property<int?>("DepartureId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("ModelId")
+                    b.Property<int?>("ModelId")
+                        .IsRequired()
                         .HasColumnType("int");
+
+                    b.Property<double>("TicketPrice")
+                        .HasColumnType("float");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -519,6 +617,7 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
@@ -527,6 +626,26 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Models");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 979, DateTimeKind.Local).AddTicks(3412),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 980, DateTimeKind.Local).AddTicks(3128),
+                            Name = "Boeing 439-10",
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 980, DateTimeKind.Local).AddTicks(3879),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 980, DateTimeKind.Local).AddTicks(3883),
+                            Name = "Airbus D123 WEX",
+                            UpdatedBy = "System"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

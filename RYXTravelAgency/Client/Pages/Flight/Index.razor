@@ -23,6 +23,7 @@ else
     <table class="table table-responsive">
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Model</th>
                 <th>Arrival Location</th>
                 <th>Departure Location</th>
@@ -33,23 +34,24 @@ else
         <tbody>
             @foreach (var flight in Flights)
             {
-                <tr>
-                    <td>@flight.Arrival.Arriv_Location</td>
-                    <td>@flight.Departure.Depart_Location</td>
-                    <td>@flight.Model.Name</td>
-                    <td>@flight.Available_Seats</td>
-                    <td>
-                        <a href="/flights/view/@flight.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/flights/edit/@flight.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(()=>Delete(flight.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>@flight.Id</td>
+                <td>@flight.Model.Name</td>
+                <td>@flight.Arrival.Arriv_Location</td>
+                <td>@flight.Departure.Depart_Location</td>
+                <td>@flight.Available_Seats</td>
+                <td>
+                    <a href="/flights/view/@flight.Id" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/flights/edit/@flight.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(()=>Delete(flight.Id))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -71,7 +73,7 @@ else
         var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {flight.Available_Seats}?");
         if (confirm)
         {
-            await _client.DeleteAsync($"api/flights/{flightId}");
+            await _client.DeleteAsync($"{Endpoints.FlightsEndpoint}/{flightId}");
             await OnInitializedAsync();
         }
     }

@@ -34,20 +34,22 @@ else
         <tbody>
             @foreach (var customer in Customers)
             {
-                <tr>
-                    <td>@customer.Name</td>
-                    <td>
-                        <a href="/customers/view/@customer.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/customers/edit/@customer.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(()=>Delete(customer.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>@customer.Name</td>
+                <td>@customer.Phone</td>
+                <td>@customer.EmailAddress</td>
+                <td>
+                    <a href="/customers/view/@customer.Id" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/customers/edit/@customer.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(()=>Delete(customer.Id))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -69,7 +71,7 @@ else
         var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {customer.Name}?");
         if (confirm)
         {
-            await _client.DeleteAsync($"api/customers/{customerId}");
+            await _client.DeleteAsync($"{Endpoints.CustomersEndpoint}/{customerId}");
             await OnInitializedAsync();
         }
     }

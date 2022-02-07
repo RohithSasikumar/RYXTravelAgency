@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RYXTravelAgency.Server.Data;
 
-namespace RYXTravelAgency.Server.Data.Migrations
+namespace RYXTravelAgency.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220207113342_AddAgencyModel")]
+    partial class AddAgencyModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,14 +154,14 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         new
                         {
                             Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                            ConcurrencyStamp = "83cc2e0c-8948-4286-9d45-d878dc174f7e",
+                            ConcurrencyStamp = "e13f5e5b-ca1d-420b-95eb-c639e434fe82",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            ConcurrencyStamp = "cfca44f5-0309-43fc-a374-515998fc7215",
+                            ConcurrencyStamp = "a7cce0fe-0c94-480a-88ce-00c09cdc1da5",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -355,7 +357,7 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "83f982be-9b77-4225-a3db-4d50126f03e9",
+                            ConcurrencyStamp = "00ebcbd2-bb63-448c-a390-1ef2ad6de45a",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -363,9 +365,9 @@ namespace RYXTravelAgency.Server.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMbfCX9zCPu3Sbe6lKmGNtf7NtNKSaX8BUvTEY17VRwSIXVYdNAHf/XnEEDE7XCaGQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEK0xMHyEP/dN9WYZjJKaBUduvWVpAlm84anx7yyUY42Yba/V7LtG7jL/o0hQEmJBqw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5b80dbb5-0483-470a-b4a8-dbcc2dbe5321",
+                            SecurityStamp = "58bd920c-5bd2-4ec5-bc7c-f235f53095be",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -379,6 +381,7 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Arriv_Location")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
@@ -403,8 +406,8 @@ namespace RYXTravelAgency.Server.Data.Migrations
                             Id = 1,
                             Arriv_Location = "South Island, New Zealand",
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2022, 2, 1, 13, 46, 46, 767, DateTimeKind.Local).AddTicks(186),
-                            DateUpdated = new DateTime(2022, 2, 1, 13, 46, 46, 767, DateTimeKind.Local).AddTicks(206),
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(5529),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(5536),
                             UpdatedBy = "System"
                         },
                         new
@@ -412,8 +415,8 @@ namespace RYXTravelAgency.Server.Data.Migrations
                             Id = 2,
                             Arriv_Location = "Rome",
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2022, 2, 1, 13, 46, 46, 767, DateTimeKind.Local).AddTicks(209),
-                            DateUpdated = new DateTime(2022, 2, 1, 13, 46, 46, 767, DateTimeKind.Local).AddTicks(211),
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(5540),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(5541),
                             UpdatedBy = "System"
                         });
                 });
@@ -431,7 +434,8 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("CustomerId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
@@ -443,10 +447,12 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.Property<DateTime>("Depart_time")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FlightId")
+                    b.Property<int?>("FlightId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("Total_seats")
+                    b.Property<int?>("Total_seats")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -478,13 +484,18 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmailAddress")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Phone")
-                        .HasColumnType("int");
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -511,6 +522,7 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Depart_Location")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
@@ -525,8 +537,8 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2022, 2, 1, 13, 46, 46, 767, DateTimeKind.Local).AddTicks(3085),
-                            DateUpdated = new DateTime(2022, 2, 1, 13, 46, 46, 767, DateTimeKind.Local).AddTicks(3092),
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(8027),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(8033),
                             Depart_Location = "Singapore",
                             UpdatedBy = "System"
                         },
@@ -534,8 +546,8 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         {
                             Id = 2,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2022, 2, 1, 13, 46, 46, 767, DateTimeKind.Local).AddTicks(3095),
-                            DateUpdated = new DateTime(2022, 2, 1, 13, 46, 46, 767, DateTimeKind.Local).AddTicks(3096),
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(8036),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 981, DateTimeKind.Local).AddTicks(8037),
                             Depart_Location = "Bangkok, Thailand",
                             UpdatedBy = "System"
                         });
@@ -548,10 +560,12 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ArrivalId")
+                    b.Property<int?>("ArrivalId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("Available_Seats")
+                    b.Property<int?>("Available_Seats")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -563,11 +577,16 @@ namespace RYXTravelAgency.Server.Data.Migrations
                     b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartureId")
+                    b.Property<int?>("DepartureId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("ModelId")
+                    b.Property<int?>("ModelId")
+                        .IsRequired()
                         .HasColumnType("int");
+
+                    b.Property<double>("TicketPrice")
+                        .HasColumnType("float");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -600,6 +619,7 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
@@ -614,8 +634,8 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2022, 2, 1, 13, 46, 46, 764, DateTimeKind.Local).AddTicks(6544),
-                            DateUpdated = new DateTime(2022, 2, 1, 13, 46, 46, 765, DateTimeKind.Local).AddTicks(6853),
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 979, DateTimeKind.Local).AddTicks(3412),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 980, DateTimeKind.Local).AddTicks(3128),
                             Name = "Boeing 439-10",
                             UpdatedBy = "System"
                         },
@@ -623,8 +643,8 @@ namespace RYXTravelAgency.Server.Data.Migrations
                         {
                             Id = 2,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2022, 2, 1, 13, 46, 46, 765, DateTimeKind.Local).AddTicks(7721),
-                            DateUpdated = new DateTime(2022, 2, 1, 13, 46, 46, 765, DateTimeKind.Local).AddTicks(7727),
+                            DateCreated = new DateTime(2022, 2, 7, 19, 33, 41, 980, DateTimeKind.Local).AddTicks(3879),
+                            DateUpdated = new DateTime(2022, 2, 7, 19, 33, 41, 980, DateTimeKind.Local).AddTicks(3883),
                             Name = "Airbus D123 WEX",
                             UpdatedBy = "System"
                         });

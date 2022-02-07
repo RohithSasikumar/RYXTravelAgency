@@ -1,0 +1,90 @@
+﻿@inject HttpClient _client
+
+<EditForm Model="@booking" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Flight: </label>
+        <div>
+            <InputSelect @bind-Value="booking.FlightId" class="form-control">
+                <option value="">-- Select Flight --</option>
+                @if (Flights != null)
+
+                    foreach (var flight in Flights)
+                    {
+                        <option value="@flight.Id">@flight.Model.Name (@flight.Departure.Depart_Location to @flight.Arrival.Arriv_Location)</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => booking.FlightId)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Customer: </label>
+        <div>
+            <InputSelect @bind-Value="booking.CustomerId" class="form-control">
+                <option value="">-- Select Customer --</option>
+                @if (Customers != null)
+                {
+                    foreach (var customer in Customers)
+                    {
+                        <option value="@customer.Id">@customer.Name - @customer.EmailAddress </option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => booking.CustomerId)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Time of Departure: </label>
+        <div>
+            <input type="datetime" @bind="@booking.Depart_time" @bind:format="dd-MM-yyyy HH:mm" />
+            <ValidationMessage For="@(() => booking.Depart_time)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Time of Arrival: </label>
+        <div>
+            <input type="datetime" @bind="@booking.Arrive_time" @bind:format="dd-MM-yyyy HH:mm" />
+            <ValidationMessage For="@(() => booking.Arrive_time)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Number of Seats: </label>
+        <div>
+            <InputNumber @bind-Value="@booking.Total_seats" class="form-control" />
+            <ValidationMessage For="@(() => booking.Total_seats)" />
+        </div>
+    </div>
+
+
+    @if (!Disabled)
+    {
+        <button type="submit" class="btn btn-success btn-block">@ButtonText</button>
+    }
+
+    <BackToList Target="bookings" />
+
+</EditForm>
+
+
+@code {
+    [Parameter] public Booking booking { get; set; }
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+    private IList<Flight> Flights;
+    private IList<Customer> Customers;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Flights = await _client.GetFromJsonAsync<List<Flight>>($"{Endpoints.FlightsEndpoint}");
+        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+    }
+}

@@ -1,0 +1,38 @@
+﻿<EditForm Model="@arrival" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+
+    <div class="form-group">
+
+
+        <label> Location: </label>
+
+        <div>
+
+            <InputText @bind-Value="@arrival.Arriv_Location" class="form-control" />
+            <ValidationMessage For="@(() => arrival.Arriv_Location)" />
+
+        </div>
+
+    </div>
+
+    @if (!Disabled)
+    {
+        <button type="submit" class="btn btn-success btn-block">@ButtonText</button>
+    }
+
+    <BackToList Target="arrivals" />
+
+</EditForm>
+
+
+
+
+@code {
+    [Parameter] public Arrival arrival { get; set; }
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+}
+

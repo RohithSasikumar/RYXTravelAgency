@@ -1,0 +1,17 @@
+﻿@page "/arrivals/view/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>View Arrival Location</h3>
+
+<FormComponent arrival="arrival" Disabled="true" />
+
+@code {
+    [Parameter] public int id { get; set; }
+    Arrival arrival = new Arrival();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        arrival = await _client.GetFromJsonAsync<Arrival>($"{Endpoints.ArrivalsEndpoint}/{id}");
+    }
+}
